@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shree Roofing Solutions — Missed Calls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12141C; --surface: #1B1E29; --surface-2: #222635; --ink: #EDEEF2; --ink-soft: #A3A7B5; --ink-faint: #676C7D;
+    --line: #2A2E3B; --accent: #E1734A; --accent-soft: #2E2118; --blue: #5B8DEF; --blue-soft: #1B2536;
+    --good: #57B894; --good-soft: #17281F; --danger: #D9645A;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root[data-theme="light"] {
+    --bg: #F0F1F5; --surface: #FFFFFF; --surface-2: #F6F7FA; --ink: #171A22; --ink-soft: #565C6B; --ink-faint: #9096A3;
+    --line: #E1E3EA; --accent: #D9603A; --accent-soft: #FBEAE2; --blue: #3E6FD1; --blue-soft: #E8EFFC;
+    --good: #2F8F6B; --good-soft: #E4F3ED; --danger: #C4453B;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; color: var(--ink); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(ellipse 900px 520px at 100% -10%, rgba(225,115,74,0.10), transparent 55%),
+      radial-gradient(ellipse 700px 500px at -5% 100%, rgba(91,141,239,0.08), transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 52px 28px 90px; }
+
+  header.masthead {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+    padding-bottom: 26px; margin-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  .brand-eyebrow { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; font-weight: 600; }
+  .masthead h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 38px); margin: 0; line-height: 1.05; letter-spacing: -0.01em; }
+  .status-block { text-align: right; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .status { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--ink-faint); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(225,115,74,0.5); animation: pulseDot 2.2s ease-out infinite; }
+  .dot.error { background: var(--danger); animation: none; box-shadow: none; }
+  @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(225,115,74,0.4); } 70% { box-shadow: 0 0 0 7px rgba(225,115,74,0); } 100% { box-shadow: 0 0 0 0 rgba(225,115,74,0); } }
+  button.refresh { border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12.5px; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all .15s ease; }
+  button.refresh:hover { border-color: var(--accent); color: var(--accent); }
+  button.refresh:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 36px 0 34px; }
+  .stat {
+    padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; cursor: pointer;
+  }
+  .stat:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.6); }
+  .stat.active { border-color: var(--stat-accent, var(--accent)); background: var(--stat-soft, var(--accent-soft)); }
+  .stat.active .num { color: var(--stat-accent, var(--accent)); }
+  .stat-icon { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: var(--stat-soft, var(--accent-soft)); color: var(--stat-accent, var(--accent)); margin-bottom: 14px; }
+  .stat .label { font-size: 12px; color: var(--ink-faint); margin-bottom: 6px; }
+  .stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 30px; line-height: 1; color: var(--ink); }
+
+  .chart-block { margin: 0 0 34px; padding: 20px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+  .chart-label { font-size: 11.5px; color: var(--ink-faint); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 12px; height: 54px; }
+  .chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 9px; height: 100%; justify-content: flex-end; }
+  .chart-bar { width: 100%; max-width: 32px; background: var(--accent); border-radius: 4px 4px 2px 2px; min-height: 2px; opacity: .6; transition: opacity .15s; }
+  .chart-bar-col:hover .chart-bar { opacity: 1; }
+  .chart-count { font-size: 10px; color: var(--ink-faint); }
+  .chart-day { font-size: 10.5px; color: var(--ink-faint); }
+
+  .section-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 18px; flex-wrap: wrap; }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; margin: 0; }
+  .search-inline {
+    background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+    font-family: 'Inter', sans-serif; font-size: 13px; padding: 9px 15px; border-radius: 9px;
+    outline: none; transition: border-color .15s ease, width .15s ease; width: 210px; max-width: 100%;
+  }
+  .search-inline::placeholder { color: var(--ink-faint); }
+  .search-inline:focus { border-color: var(--accent); width: 250px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 36px; }
+  .call-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; animation: fadeIn .4s ease both;
+  }
+  .call-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 14px 30px -18px rgba(0,0,0,0.6); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .card-time { font-size: 11px; color: var(--ink-faint); }
+  .card-name { font-weight: 700; font-size: 16px; margin-bottom: 10px; font-family: 'Space Grotesk', sans-serif; }
+  .card-sub { font-size: 13px; color: var(--ink-soft); line-height: 1.5; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; min-height: 18px; }
+  .card-foot { font-size: 11.5px; color: var(--accent); font-weight: 600; border-top: 1px solid var(--line); padding-top: 10px; }
+  .badge { font-size: 11px; padding: 4px 11px; border-radius: 20px; background: var(--good-soft); color: var(--good); font-weight: 600; }
+  .badge.no-reply { background: rgba(217,100,90,0.12); color: var(--danger); }
+
+  .empty { padding: 60px 30px; text-align: center; color: var(--ink-faint); font-size: 14.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+  .empty svg { margin-bottom: 14px; opacity: .45; color: var(--accent); }
+  .empty strong { display: block; margin-bottom: 6px; color: var(--ink-soft); font-weight: 700; font-family: 'Space Grotesk', sans-serif; font-size: 17px; }
+  .error-box { background: var(--surface); border-left: 3px solid var(--danger); padding: 18px 20px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; border-radius: 10px; }
+  .error-box strong { color: var(--ink); }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(10,12,18,0.65); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center; z-index: 50; padding: 20px; animation: fadeIn .2s ease both;
+  }
+  .modal-box {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; max-width: 460px; width: 100%;
+    max-height: 82vh; overflow-y: auto; padding: 26px 28px; box-shadow: 0 30px 80px -24px rgba(0,0,0,0.7);
+  }
+  .modal-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .modal-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; margin: 0; }
+  .modal-close { background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-faint); width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 14px; line-height: 1; flex-shrink: 0; }
+  .modal-close:hover { border-color: var(--accent); color: var(--accent); }
+  .modal-meta { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 18px; }
+  .modal-section-label { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 10px; }
+  .modal-msg-text { font-size: 13.5px; color: var(--ink-soft); line-height: 1.65; white-space: pre-line; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  @media (max-width: 640px) { .stats { grid-template-columns: 1fr; row-gap: 12px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <div class="brand-eyebrow">Shree Roofing Solutions</div>
+      <h1>Missed Calls</h1>
+    </div>
+    <div class="status-block">
+      <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Loading…</span></div>
+      <button class="refresh" id="refreshBtn">Refresh</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat active" data-filter="all" style="--stat-accent:#E1734A; --stat-soft:#2E2118">
+      <div class="stat-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <div class="label">Missed calls handled</div>
+      <div class="num" id="statTotal">–</div>
+    </div>
+    <div class="stat" data-filter="today" style="--stat-accent:#57B894; --stat-soft:#17281F">
+      <div class="stat-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <div class="label">Handled today</div>
+      <div class="num" id="statToday">–</div>
+    </div>
+    <div class="stat" data-filter="week" style="--stat-accent:#5B8DEF; --stat-soft:#1B2536">
+      <div class="stat-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
+      <div class="label">Handled this week</div>
+      <div class="num" id="statWeek">–</div>
+    </div>
+  </div>
+
+  <div class="chart-block">
+    <div class="chart-label">Last 7 days</div>
+    <div class="chart-bars" id="chartBars"></div>
+  </div>
+
+  <div class="section-header">
+    <h2 class="section-title">Calls handled</h2>
+    <input id="searchInput" type="text" class="search-inline" placeholder="Search by number…">
+  </div>
+  <section id="panel" class="card-grid"></section>
+
+</div>
+
+<script>
+// ---- CONFIGURE YOUR SHEET HERE ----
+const SHEET = { id: '1Q55UNkbbr8kdCMUZrwoXB5t6-on52M0MjQpg2ng9tjI', tab: 'Missed Call Log' };
+const REFRESH_MS = 60000;
+// -------------------------------------
+
+function gvizUrl(id, tab) { return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab)}&headers=1`; }
+async function fetchSheet(id, tab) {
+  const res = await fetch(gvizUrl(id, tab));
+  const text = await res.text();
+  const m = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]+)\);?\s*$/);
+  if (!m) throw new Error('parse failure');
+  const json = JSON.parse(m[1]);
+  if (!json.table || !json.table.rows) return [];
+  return json.table.rows.map(r => (r.c || []).map(c => (c && (c.f ?? c.v)) ? String(c.f ?? c.v) : ''));
+}
+function fmtTime(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso || '—';
+  return d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+function isToday(iso) { const d = new Date(iso); return !isNaN(d) && d.toDateString() === new Date().toDateString(); }
+function isThisWeek(iso) { const d = new Date(iso); if (isNaN(d)) return false; const now = new Date(); const diff = (now - d) / 86400000; return diff >= 0 && diff <= 7; }
+function esc(s) { return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let rows = [], uid = 0, searchText = '', statFilter = 'all';
+function getFiltered() {
+  const q = searchText.trim().toLowerCase();
+  let out = q ? rows.filter(r => (r[0] || '').toLowerCase().includes(q)) : rows;
+  if (statFilter === 'today') out = out.filter(r => isToday(r[1]));
+  if (statFilter === 'week') out = out.filter(r => isThisWeek(r[1]));
+  return out;
+}
+function animateNumber(el, target) {
+  target = Number(target) || 0;
+  const start = Number(el.dataset.val || 0);
+  const t0 = performance.now();
+  function step(now) {
+    const p = Math.min(1, (now - t0) / 500);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(start + (target - start) * eased);
+    if (p < 1) requestAnimationFrame(step); else el.dataset.val = target;
+  }
+  requestAnimationFrame(step);
+}
+const emptyIcon = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+
+function render() {
+  const el = document.getElementById('panel');
+  if (!rows.length) { el.innerHTML = `<div class="empty">${emptyIcon}<strong>No missed calls yet</strong>Automatic replies to unanswered calls will appear here.</div>`; return; }
+  const filtered = getFiltered();
+  if (!filtered.length) { el.innerHTML = `<div class="empty">${emptyIcon}<strong>No matches</strong>Nothing matches this filter or search.</div>`; return; }
+  el.innerHTML = filtered.slice().reverse().map((r, idx) => {
+    const [caller, callTime, sms] = r;
+    return `<div class="call-card" style="animation-delay:${idx * 30}ms" onclick="openCallModal('${esc(caller)}','${esc(callTime)}')">
+      <div class="card-top">
+        <span class="card-time">${fmtTime(callTime)}</span>
+        <span class="badge ${sms ? '' : 'no-reply'}">${sms ? 'Replied' : 'No reply'}</span>
+      </div>
+      <div class="card-name">${esc(caller)}</div>
+      <div class="card-sub">${esc(sms) || 'No reply text recorded.'}</div>
+      <div class="card-foot">Tap to view →</div>
+    </div>`;
+  }).join('');
+}
+window.openCallModal = function(caller, callTime) {
+  const callRow = rows.find(r => r[0] === caller && r[1] === callTime);
+  if (!callRow) return;
+  const [phone, time, sms] = callRow;
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'callModal';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 class="modal-title">${esc(phone)}</h3>
+        <button class="modal-close" onclick="closeCallModal()">✕</button>
+      </div>
+      <div class="modal-meta">${fmtTime(time)}</div>
+      <div class="modal-section-label">Auto-reply sent</div>
+      <div class="modal-msg-text">${esc(sms) || 'No reply text recorded.'}</div>
+    </div>`;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeCallModal(); });
+  document.body.appendChild(overlay);
+};
+window.closeCallModal = function() {
+  const el = document.getElementById('callModal');
+  if (el) el.remove();
+};
+function updateStats() {
+  animateNumber(document.getElementById('statTotal'), rows.length);
+  animateNumber(document.getElementById('statToday'), rows.filter(r => isToday(r[1])).length);
+  animateNumber(document.getElementById('statWeek'), rows.filter(r => isThisWeek(r[1])).length);
+}
+function renderChart() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(d); }
+  const counts = days.map(d => rows.filter(r => { const rd = new Date(r[1]); return !isNaN(rd) && rd.toDateString() === d.toDateString(); }).length);
+  const max = Math.max(1, ...counts);
+  document.getElementById('chartBars').innerHTML = days.map((d, i) => `
+    <div class="chart-bar-col">
+      <div class="chart-count">${counts[i] || ''}</div>
+      <div class="chart-bar" style="height:${Math.max(3, (counts[i] / max) * 100)}%"></div>
+      <div class="chart-day">${d.toLocaleDateString(undefined, { weekday: 'short' })[0]}</div>
+    </div>`).join('');
+}
+function setStatus(state, text) {
+  document.getElementById('statusDot').className = 'dot' + (state === 'error' ? ' error' : '');
+  document.getElementById('statusText').textContent = text;
+}
+async function loadAll() {
+  setStatus('loading', 'Refreshing…');
+  try {
+    rows = await fetchSheet(SHEET.id, SHEET.tab);
+    updateStats(); renderChart(); render();
+    setStatus('live', 'Live · updated ' + new Date().toLocaleTimeString());
+  } catch (err) {
+    setStatus('error', 'Could not load data');
+    document.getElementById('panel').innerHTML = `<div class="error-box"><strong>Can't reach the log.</strong><br>
+      Make sure the Google Sheet is shared as "Anyone with the link can view", and that the Sheet ID in this file is correct. Then hit Refresh.</div>`;
+  }
+}
+document.querySelectorAll('.stat').forEach(stat => {
+  stat.addEventListener('click', () => {
+    document.querySelectorAll('.stat').forEach(s => s.classList.remove('active'));
+    stat.classList.add('active');
+    statFilter = stat.dataset.filter;
+    render();
+  });
+});
+document.getElementById('refreshBtn').addEventListener('click', loadAll);
+document.getElementById('searchInput').addEventListener('input', e => { searchText = e.target.value; render(); });
+loadAll();
+setInterval(loadAll, REFRESH_MS);
+</script>
+</body>
+</html>
